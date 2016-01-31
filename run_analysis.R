@@ -59,18 +59,19 @@ names(testSet) <- c('subject', 'activity', filteredFeaturesNames)
 
 ## Merge training and test set together
 
+message('Training set and test set data are merged together')
 allData <- rbind(trainSet, testSet)
-
-allData$subject <- as.factor(allData$subject)
-allData$activity <- as.factor(allData$activity)
 
 
 ## Create a new dataset starting from the previous results in order to compute the average of each variable for each activity and each subject
 
+message('Read the test set and filter only the interested features')
 avgData <- aggregate(allData[, -(1:2)], by=list(allData$subject, allData$activity), FUN=mean)
 names(avgData)[1:2] <- c('subject', 'activity')
+avgData <- avgData[order(avgData$subject),]
 
 
 ## Save avgData to file
 
+message('Save avgData to file')
 write.table(avgData, file = 'tidyData.txt', row.names = FALSE)
